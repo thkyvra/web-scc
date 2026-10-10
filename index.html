@@ -42,6 +42,7 @@ p { margin: 0 0 1em; }
 /* tombol */
 .tombol { display: inline-block; font-family: var(--mono); font-weight: 600; font-size: .9rem; background: var(--kuning); color: var(--hitam); text-decoration: none; padding: .85em 1.4em; border-radius: 999px; border: 2px solid var(--kuning); cursor: pointer; transition: transform .15s, box-shadow .15s; }
 .tombol:hover { transform: translateY(-2px); box-shadow: 0 6px 0 -2px var(--hitam); }
+.tombol:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: none; }
 .tombol--garis { background: transparent; color: var(--putih); border-color: var(--putih); }
 .tombol--garis:hover { box-shadow: 0 6px 0 -2px var(--kuning); }
 .tombol--penuh { width: 100%; }
@@ -158,6 +159,7 @@ p { margin: 0 0 1em; }
 .form-kartu input:focus, .form-kartu textarea:focus { outline: none; border-color: var(--hitam); background: var(--putih); }
 .form-kartu textarea { resize: vertical; }
 .notif { border-radius: 10px; padding: .8em 1em; font-size: .92rem; background: #e3f1e8; color: var(--hijau); }
+.notif--gagal { background: #f6e3e0; color: var(--merah); }
 .notif[hidden] { display: none; }
 .warna { border: 0; padding: 0; margin: 0 0 1.2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 .warna legend { font-weight: 500; font-size: .92rem; margin-bottom: .5rem; }
@@ -180,8 +182,6 @@ p { margin: 0 0 1em; }
 .sticky--putih { background: var(--putih); border: 1px solid #e2dfd6; }
 .sticky--hitam { background: var(--hitam); color: var(--putih); }
 .sticky--hitam figcaption span { background: rgba(255,255,255,.14); }
-.hapus { position: absolute; top: 6px; right: 8px; background: none; border: 0; color: inherit; opacity: .35; cursor: pointer; font-size: 1.1rem; }
-.hapus:hover { opacity: 1; }
 .kosong { border: 2px dashed #cfcbc0; border-radius: var(--r); padding: 3rem 2rem; text-align: center; column-span: all; }
 
 /* footer */
@@ -470,7 +470,7 @@ p { margin: 0 0 1em; }
                         <label><input type="radio" name="warna" value="putih"><span class="titik titik--putih"></span>Putih</label>
                         <label><input type="radio" name="warna" value="hitam"><span class="titik titik--hitam"></span>Hitam</label>
                     </fieldset>
-                    <button type="submit" class="tombol tombol--penuh">Tempel di dinding</button>
+                    <button type="submit" class="tombol tombol--penuh" id="tombolKirim">Tempel di dinding</button>
                 </form>
             </aside>
 
@@ -512,6 +512,13 @@ p { margin: 0 0 1em; }
 </div>
 
 <script>
+// =====================================================================
+//  ALAMAT DATABASE (Google Sheets)
+//  Ganti tulisan TEMPEL_URL_DI_SINI dengan "Web app URL" dari Apps Script.
+//  Contoh: const URL_DATABASE = 'https://script.google.com/macros/s/AKfy.../exec';
+// =====================================================================
+const URL_DATABASE = 'https://script.google.com/macros/s/AKfycbwAkm85Zv_upolmSdVJCPViTMsASuNUSJhBFFjn3v9esix8JVcrjjKeryeT0tZO1m-drw/exec';
+
 // Tahun di footer
 document.getElementById('tahun').textContent = new Date().getFullYear();
 
@@ -540,30 +547,68 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) tutupLightb
 document.getElementById('tutupLightbox').addEventListener('click', tutupLightbox);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') tutupLightbox(); });
 
-// Buku kenangan (disimpan di browser dengan localStorage)
-const KUNCI = 'scc-kenangan';
+// ================= BUKU KENANGAN (tersimpan di Google Sheets) =================
+const DATABASE_SIAP = URL_DATABASE.startsWith('https://script.google.com/');
+const WARNA_BOLEH = ['kuning', 'putih', 'hitam'];
+let semuaKenangan = [];
 let filterAktif = null;
+let sedangMemuat = true;
 
-function ambilKenangan() {
-    try { return JSON.parse(localStorage.getItem(KUNCI)) || []; }
-    catch (e) { return []; }
-}
-function simpanKenangan(daftar) {
-    try { localStorage.setItem(KUNCI, JSON.stringify(daftar)); } catch (e) {}
-}
 function aman(teks) {
     const div = document.createElement('div');
     div.textContent = teks;
     return div.innerHTML;
 }
 
+// Merapikan data dari spreadsheet (angka diubah ke teks, warna dibatasi)
+function rapikan(k) {
+    return {
+        id: Number(k.id) || 0,
+        nama: String(k.nama ?? '').trim(),
+        angkatan: String(k.angkatan ?? '').trim(),
+        pesan: String(k.pesan ?? '').trim(),
+        warna: WARNA_BOLEH.includes(k.warna) ? k.warna : 'kuning',
+        waktu: k.waktu
+    };
+}
+
+function tampilkanPesan(judul, isi) {
+    document.getElementById('filter').innerHTML = '';
+    document.getElementById('dinding').innerHTML =
+        `<div class="kosong"><p class="mono">${judul}</p><p>${isi}</p></div>`;
+}
+
+async function muatKenangan() {
+    if (!DATABASE_SIAP) {
+        sedangMemuat = false;
+        tampilkanPesan('// database belum disambungkan', 'Isi URL_DATABASE di bagian script dengan Web app URL dari Google Apps Script.');
+        return;
+    }
+    try {
+        const res = await fetch(URL_DATABASE);
+        const data = await res.json();
+        semuaKenangan = Array.isArray(data)
+            ? data.map(rapikan).filter(k => k.nama && k.pesan)
+            : [];
+        sedangMemuat = false;
+        tampilkan();
+    } catch (err) {
+        console.error(err);
+        sedangMemuat = false;
+        tampilkanPesan('// gagal memuat kenangan', 'Periksa koneksi internet, lalu muat ulang halaman.');
+    }
+}
+
 function tampilkan() {
-    const semua = ambilKenangan();
+    if (sedangMemuat) {
+        tampilkanPesan('// memuat kenangan…', 'Sebentar ya.');
+        return;
+    }
     const dinding = document.getElementById('dinding');
     const filter = document.getElementById('filter');
 
     // tombol filter angkatan
-    const angkatan = [...new Set(semua.map(k => k.angkatan).filter(Boolean))].sort();
+    const angkatan = [...new Set(semuaKenangan.map(k => k.angkatan).filter(Boolean))].sort();
     filter.innerHTML = angkatan.length
         ? `<button class="${!filterAktif ? 'aktif' : ''}" data-filter="">Semua</button>` +
           angkatan.map(a => `<button class="${filterAktif === a ? 'aktif' : ''}" data-filter="${aman(a)}">${aman(a)}</button>`).join('')
@@ -573,27 +618,24 @@ function tampilkan() {
         tampilkan();
     }));
 
-    const daftar = semua.filter(k => !filterAktif || k.angkatan === filterAktif);
+    const daftar = semuaKenangan.filter(k => !filterAktif || k.angkatan === filterAktif);
     if (!daftar.length) {
         dinding.innerHTML = '<div class="kosong"><p class="mono">// dinding masih kosong</p><p>Jadilah orang pertama yang menempelkan kenangan.</p></div>';
         return;
     }
-    dinding.innerHTML = daftar.map(k => `
+    dinding.innerHTML = daftar.map(k => {
+        const tgl = new Date(k.waktu);
+        const tanggal = isNaN(tgl) ? '' : tgl.toLocaleDateString('id-ID');
+        return `
         <figure class="sticky sticky--${k.warna}">
-            <button class="hapus" title="Hapus" data-id="${k.id}">×</button>
             <blockquote>${aman(k.pesan)}</blockquote>
             <figcaption>
                 <strong>${aman(k.nama)}</strong>
                 ${k.angkatan ? `<span>${aman(k.angkatan)}</span>` : ''}
-                <time class="mono kecil">${new Date(k.waktu).toLocaleDateString('id-ID')}</time>
+                <time class="mono kecil">${tanggal}</time>
             </figcaption>
-        </figure>`).join('');
-
-    dinding.querySelectorAll('.hapus').forEach(b => b.addEventListener('click', () => {
-        if (!confirm('Hapus kenangan ini?')) return;
-        simpanKenangan(ambilKenangan().filter(k => k.id !== Number(b.dataset.id)));
-        tampilkan();
-    }));
+        </figure>`;
+    }).join('');
 }
 
 const pesan = document.getElementById('pesan');
@@ -601,8 +643,18 @@ pesan.addEventListener('input', () => {
     document.getElementById('hitung').textContent = `${pesan.value.length}/600`;
 });
 
-document.getElementById('formKenangan').addEventListener('submit', e => {
+function tunjukkanNotif(teks, gagal) {
+    const notif = document.getElementById('notif');
+    notif.textContent = teks;
+    notif.classList.toggle('notif--gagal', !!gagal);
+    notif.hidden = false;
+    setTimeout(() => notif.hidden = true, gagal ? 6000 : 4000);
+}
+
+document.getElementById('formKenangan').addEventListener('submit', async e => {
     e.preventDefault();
+    const form = e.target;
+    const tombol = document.getElementById('tombolKirim');
     const baru = {
         id: Date.now(),
         nama: document.getElementById('nama').value.trim(),
@@ -612,17 +664,38 @@ document.getElementById('formKenangan').addEventListener('submit', e => {
         waktu: new Date().toISOString()
     };
     if (!baru.nama || baru.pesan.length < 5) return;
-    simpanKenangan([baru, ...ambilKenangan()]);
-    e.target.reset();
+    if (!DATABASE_SIAP) {
+        tunjukkanNotif('Database belum disambungkan, kenangan belum bisa dikirim.', true);
+        return;
+    }
+
+    tombol.disabled = true;
+    tombol.textContent = 'Menempelkan…';
+    try {
+        // dikirim sebagai teks biasa agar diterima Google Apps Script
+        const res = await fetch(URL_DATABASE, { method: 'POST', body: JSON.stringify(baru) });
+        const hasil = (await res.text()).trim();
+        if (hasil !== 'ok') throw new Error(hasil);
+    } catch (err) {
+        console.error(err);
+        tunjukkanNotif('Maaf, kenangan belum terkirim. Periksa koneksi internet lalu coba lagi.', true);
+        tombol.disabled = false;
+        tombol.textContent = 'Tempel di dinding';
+        return;
+    }
+    tombol.disabled = false;
+    tombol.textContent = 'Tempel di dinding';
+
+    semuaKenangan = [baru, ...semuaKenangan];
+    form.reset();
     document.getElementById('hitung').textContent = '0/600';
-    const notif = document.getElementById('notif');
-    notif.hidden = false;
-    setTimeout(() => notif.hidden = true, 4000);
+    tunjukkanNotif('Terima kasih! Kenanganmu sudah tertempel di dinding SCC.');
     filterAktif = null;
     tampilkan();
 });
 
 tampilkan();
+muatKenangan();
 </script>
 </body>
 </html>
