@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smaeli Cyber Club · SMAN 5 Parepare</title>
+<meta name="description" content="Pengenalan dan buku kenangan Smaeli Cyber Club (SCC), komunitas teknologi SMA Negeri 5 Parepare.">
+<link rel="icon" href="images/logo-scc.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Smaeli Cyber Club: hitam-putih dari logo + kuning almamater */
+:root {
+    --hitam: #0d0f0e; --hitam-2: #171a19; --garis: #2a2f2d;
+    --kertas: #f5f3ee; --krem: #ebe7dc; --putih: #ffffff;
+    --kuning: #f2c230; --abu: #6b6f6c; --abu-terang: #a7aba8;
+    --merah: #c0392b; --hijau: #2e7d4f;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: "Space Grotesk", system-ui, sans-serif;
+    --r: 14px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+body { margin: 0; font-family: var(--sans); font-size: 17px; line-height: 1.6; color: var(--hitam); background: var(--kertas); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.1; margin: 0 0 .5em; letter-spacing: -.02em; }
+h1 { font-family: var(--mono); font-weight: 800; font-size: clamp(2.6rem, 7vw, 5.2rem); letter-spacing: -.04em; word-spacing: -.3em; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 700; max-width: 22ch; }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1em; }
+.wrap { width: min(1140px, 100% - 32px); margin-inline: auto; }
+.mono { font-family: var(--mono); }
+.kecil { font-size: .78rem; letter-spacing: .02em; }
+.muted { color: var(--abu); }
+.kuning { color: var(--kuning); }
+.besar { font-size: 1.2rem; }
+.label { font-family: var(--mono); font-size: .8rem; color: var(--kuning); margin-bottom: 1rem; text-transform: lowercase; }
+.label.gelap { color: var(--abu); }
+
+/* tombol */
+.tombol { display: inline-block; font-family: var(--mono); font-weight: 600; font-size: .9rem; background: var(--kuning); color: var(--hitam); text-decoration: none; padding: .85em 1.4em; border-radius: 999px; border: 2px solid var(--kuning); cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.tombol:hover { transform: translateY(-2px); box-shadow: 0 6px 0 -2px var(--hitam); }
+.tombol:disabled { opacity: .6; cursor: wait; transform: none; box-shadow: none; }
+.tombol--garis { background: transparent; color: var(--putih); border-color: var(--putih); }
+.tombol--garis:hover { box-shadow: 0 6px 0 -2px var(--kuning); }
+.tombol--penuh { width: 100%; }
+
+/* navigasi */
+.nav { position: sticky; top: 0; z-index: 50; background: rgba(13,15,14,.92); backdrop-filter: blur(8px); color: var(--putih); border-bottom: 1px solid var(--garis); }
+.nav__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-family: var(--mono); font-weight: 800; }
+.brand img { width: 36px; height: 36px; border-radius: 50%; background: var(--putih); }
+.brand em { font-style: normal; font-weight: 400; color: var(--abu-terang); }
+.nav__links { display: flex; gap: 1.6rem; align-items: center; font-size: .95rem; }
+.nav__links a { text-decoration: none; opacity: .8; }
+.nav__links a:hover { opacity: 1; color: var(--kuning); }
+.nav__cta { border: 1px solid var(--kuning); padding: .4em .9em; border-radius: 999px; color: var(--kuning); opacity: 1 !important; }
+.nav__toggle { display: none; background: none; border: 0; color: var(--putih); font-size: 1.5rem; cursor: pointer; }
+
+/* hero */
+.hero { position: relative; overflow: hidden; background: var(--hitam); color: var(--putih); padding: 5rem 0 0; }
+.hero__grid { position: relative; display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: center; }
+.hero__lead { font-size: 1.15rem; color: #d7dad8; max-width: 52ch; }
+.hero__aksi { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.8rem; }
+.hero__logo img { width: min(380px, 100%); margin-inline: auto; border-radius: 50%; box-shadow: 0 0 0 10px var(--hitam-2), 0 0 0 11px var(--garis); }
+.sirkuit { position: absolute; inset: 0; opacity: .14; pointer-events: none;
+    background-image: radial-gradient(circle at 0 0, var(--putih) 3px, transparent 4px), linear-gradient(var(--putih) 1px, transparent 1px), linear-gradient(90deg, var(--putih) 1px, transparent 1px);
+    background-size: 80px 80px, 80px 80px, 80px 80px;
+    mask-image: radial-gradient(ellipse at 80% 30%, #000 0%, transparent 65%);
+    -webkit-mask-image: radial-gradient(ellipse at 80% 30%, #000 0%, transparent 65%); }
+.angka { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 4rem; border-top: 1px solid var(--garis); }
+.angka div { padding: 1.6rem 1rem 2rem 0; }
+.angka div + div { padding-left: 1.4rem; border-left: 1px solid var(--garis); }
+.angka strong { display: block; font-family: var(--mono); font-size: 1.7rem; color: var(--kuning); }
+.angka span { color: var(--abu-terang); font-size: .9rem; }
+
+/* seksi */
+.seksi { padding: 5.5rem 0; }
+.seksi--gelap { background: var(--hitam); color: var(--putih); }
+.seksi--gelap .muted { color: var(--abu-terang); }
+.seksi--krem { background: var(--krem); }
+.dua-kolom { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
+.chip { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip li { font-family: var(--mono); font-size: .8rem; border: 1px solid var(--hitam); padding: .35em .8em; border-radius: 999px; }
+
+/* tiga era */
+.era { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+.era__kartu { position: relative; background: var(--hitam-2); border: 1px solid var(--garis); border-radius: var(--r); padding: 2rem 1.6rem 1.6rem; }
+.era__kartu:not(:last-child)::after { content: "→"; position: absolute; right: -1.05rem; top: 2rem; font-family: var(--mono); color: var(--kuning); font-size: 1.3rem; z-index: 2; }
+.era__kartu:last-child { border-color: var(--kuning); }
+.era__no { position: absolute; top: 1rem; right: 1.2rem; font-size: 2.6rem; font-weight: 800; color: var(--garis); }
+.era__kartu .kecil { padding-right: 3.2rem; }
+.era__kartu h3 { font-size: 1.5rem; margin-top: .3rem; }
+.era__kartu p:last-child { color: #c9ccca; margin: 0; }
+
+/* linimasa */
+.linimasa { list-style: none; margin: 2.5rem 0 0; padding: 0; position: relative; }
+.linimasa::before { content: ""; position: absolute; left: 118px; top: 8px; bottom: 8px; width: 2px; background: var(--hitam); }
+.linimasa li { display: grid; grid-template-columns: 100px 1fr; gap: 2.4rem; padding: 0 0 2rem; position: relative; }
+.linimasa li::before { content: ""; position: absolute; left: 112px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--kertas); border: 2px solid var(--hitam); }
+.linimasa li:last-child::before { background: var(--kuning); }
+.linimasa__tahun { font-weight: 600; text-align: right; font-size: .9rem; padding-top: 2px; }
+.linimasa h3 { margin-bottom: .25rem; }
+.linimasa p { color: #3c403e; margin: 0; max-width: 62ch; }
+
+/* alasan */
+.alasan { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin: 2.5rem 0; }
+.alasan__item { background: var(--kertas); border-radius: var(--r); padding: 1.4rem; border-top: 4px solid var(--hitam); }
+.alasan__item p { margin: 0; color: #3c403e; font-size: .95rem; }
+.catatan { background: var(--hitam); color: var(--putih); border-radius: var(--r); padding: 1.6rem 1.8rem; max-width: 760px; }
+.catatan .kecil { color: var(--kuning); margin-bottom: .4rem; }
+.catatan p:last-child { margin: 0; }
+
+/* batang siswi */
+.batang { display: grid; gap: 1.3rem; padding-top: .5rem; }
+.batang__baris { display: grid; grid-template-columns: 150px 1fr 96px; gap: 1rem; align-items: center; }
+.batang__label span { display: block; color: var(--abu); }
+.batang__jalur { height: 34px; background: var(--krem); border-radius: 999px; overflow: hidden; }
+.batang__isi { height: 100%; background: var(--hitam); border-radius: 999px; display: flex; align-items: center; gap: 6px; padding-left: 10px; }
+.batang__isi i { width: 14px; height: 14px; border-radius: 50%; background: var(--kuning); }
+
+/* tokoh */
+.tokoh { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+.tokoh__kartu { border: 1px solid var(--garis); border-radius: var(--r); padding: 1.6rem; }
+.tokoh__inisial { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--kuning); color: var(--hitam); font-weight: 800; font-size: 1.3rem; margin-bottom: 1rem; }
+.tokoh__kartu p { margin: 0 0 .5rem; font-size: .95rem; }
+
+/* galeri */
+.galeri { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 2.5rem; }
+.galeri figure { margin: 0; }
+.galeri__lebar { grid-column: span 2; }
+.galeri button, .identitas button { all: unset; cursor: zoom-in; display: block; border-radius: var(--r); overflow: hidden; background: var(--krem); }
+.galeri button:focus-visible, .identitas button:focus-visible { outline: 3px solid var(--kuning); outline-offset: 3px; }
+.galeri img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .4s; }
+.galeri__lebar img { aspect-ratio: 16 / 9; }
+.galeri button:hover img { transform: scale(1.04); }
+.galeri figcaption { padding: .8rem .2rem 0; }
+.galeri figcaption strong { margin-right: .5rem; }
+.galeri figcaption .mono { background: var(--hitam); color: var(--kuning); padding: .1em .5em; border-radius: 4px; }
+.galeri figcaption p { margin: .3rem 0 0; font-size: .92rem; }
+.identitas { display: grid; grid-template-columns: repeat(2, minmax(0, 320px)); gap: 1.5rem; margin: 3rem 0 0; }
+.identitas figure { margin: 0; }
+.identitas img { width: 100%; aspect-ratio: 1; object-fit: contain; background: var(--putih); padding: 1.2rem; }
+.identitas figcaption { margin-top: .6rem; }
+.lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(8,9,9,.94); display: grid; place-items: center; align-content: center; gap: 1rem; padding: 24px; color: var(--putih); }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-height: 80vh; max-width: 100%; border-radius: 8px; }
+.lightbox p { max-width: 70ch; text-align: center; color: #d7dad8; }
+.lightbox__tutup { position: absolute; top: 14px; right: 18px; background: none; border: 0; color: var(--putih); font-size: 2.4rem; cursor: pointer; line-height: 1; }
+
+/* buku kenangan */
+.kenangan { display: grid; grid-template-columns: 360px 1fr; gap: 2.5rem; align-items: start; margin-top: 2.5rem; }
+.form-kartu { position: sticky; top: 84px; background: var(--putih); border: 1px solid #e2dfd6; border-radius: var(--r); padding: 1.6rem; }
+.form-kartu h3 { font-size: 1.4rem; }
+.form-kartu label { display: block; font-weight: 500; font-size: .92rem; margin-bottom: 1rem; }
+.form-kartu input[type=text], .form-kartu textarea { display: block; width: 100%; margin-top: .35rem; font: inherit; font-size: 1rem; padding: .7em .85em; border: 1.5px solid #d6d2c7; border-radius: 10px; background: var(--kertas); }
+.form-kartu input:focus, .form-kartu textarea:focus { outline: none; border-color: var(--hitam); background: var(--putih); }
+.form-kartu textarea { resize: vertical; }
+.notif { border-radius: 10px; padding: .8em 1em; font-size: .92rem; background: #e3f1e8; color: var(--hijau); }
+.notif--gagal { background: #f6e3e0; color: var(--merah); }
+.notif[hidden] { display: none; }
+.warna { border: 0; padding: 0; margin: 0 0 1.2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.warna legend { font-weight: 500; font-size: .92rem; margin-bottom: .5rem; }
+.warna label { display: inline-flex; align-items: center; gap: .4rem; margin: 0; cursor: pointer; }
+.warna input { accent-color: var(--hitam); }
+.titik { width: 18px; height: 18px; border-radius: 4px; border: 1px solid #cfcbc0; }
+.titik--kuning { background: var(--kuning); } .titik--putih { background: var(--putih); } .titik--hitam { background: var(--hitam); }
+.filter { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.filter button { font-family: var(--mono); font-size: .8rem; background: none; border: 1px solid #cfcbc0; padding: .35em .85em; border-radius: 999px; cursor: pointer; }
+.filter button.aktif { background: var(--hitam); color: var(--putih); border-color: var(--hitam); }
+.dinding { columns: 2 260px; column-gap: 1.2rem; }
+.sticky { margin: 0 0 1.2rem; padding: 1.4rem 1.4rem 1.1rem; border-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 10px 24px -14px rgba(0,0,0,.45); transform: rotate(-.6deg); break-inside: avoid; display: inline-block; width: 100%; position: relative; }
+.sticky:nth-child(3n+2) { transform: rotate(.7deg); }
+.sticky:nth-child(3n) { transform: rotate(-.2deg); }
+.sticky blockquote { margin: 0 0 1rem; font-size: 1.02rem; white-space: pre-line; overflow-wrap: anywhere; }
+.sticky figcaption { font-size: .88rem; display: flex; flex-wrap: wrap; gap: .3rem .6rem; align-items: baseline; }
+.sticky figcaption span { font-family: var(--mono); font-size: .75rem; padding: .1em .5em; border-radius: 4px; background: rgba(0,0,0,.08); }
+.sticky time { margin-left: auto; opacity: .6; }
+.sticky--kuning { background: var(--kuning); }
+.sticky--putih { background: var(--putih); border: 1px solid #e2dfd6; }
+.sticky--hitam { background: var(--hitam); color: var(--putih); }
+.sticky--hitam figcaption span { background: rgba(255,255,255,.14); }
+.kosong { border: 2px dashed #cfcbc0; border-radius: var(--r); padding: 3rem 2rem; text-align: center; column-span: all; }
+
+/* footer */
+.footer { background: var(--hitam); color: var(--putih); padding: 3.5rem 0 1.5rem; }
+.footer__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.footer__logos { display: flex; gap: .8rem; margin-bottom: 1rem; }
+.footer__logos img { width: 54px; height: 54px; object-fit: contain; border-radius: 50%; background: var(--putih); padding: 2px; }
+.footer .muted { color: var(--abu-terang); font-size: .92rem; }
+.footer__bawah { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--garis); color: var(--abu-terang); }
+
+/* responsif */
+@media (max-width: 960px) {
+    .hero__grid, .dua-kolom, .kenangan, .footer__grid { grid-template-columns: 1fr; }
+    .hero__logo { order: -1; }
+    .hero__logo img { width: 200px; margin-inline: 0; }
+    .angka { grid-template-columns: repeat(2, 1fr); }
+    .angka div:nth-child(3) { border-left: 0; padding-left: 0; }
+    .angka div:nth-child(n+3) { border-top: 1px solid var(--garis); }
+    .era, .alasan, .tokoh, .galeri { grid-template-columns: 1fr 1fr; }
+    .era__kartu::after { display: none; }
+    .form-kartu { position: static; }
+}
+@media (max-width: 640px) {
+    body { font-size: 16px; }
+    .seksi { padding: 3.8rem 0; }
+    .hero { padding-top: 3rem; }
+    .nav__toggle { display: block; }
+    .nav__links { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 0; background: var(--hitam); padding: .5rem 16px 1.2rem; border-bottom: 1px solid var(--garis); }
+    .nav__links.buka { display: flex; }
+    .nav__links a { padding: .7rem 0; width: 100%; }
+    .nav__cta { width: auto !important; margin-top: .4rem; }
+    .era, .alasan, .tokoh, .galeri { grid-template-columns: 1fr; }
+    .galeri__lebar { grid-column: auto; }
+    .linimasa::before { left: 7px; }
+    .linimasa li { grid-template-columns: 1fr; gap: .2rem; padding-left: 2rem; }
+    .linimasa li::before { left: 1px; }
+    .linimasa__tahun { text-align: left; }
+    .batang__baris { grid-template-columns: 1fr 84px; }
+    .batang__label { grid-column: 1 / -1; }
+    .identitas { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVIGASI ================= -->
+<header class="nav">
+    <div class="wrap nav__inner">
+        <a href="#" class="brand">
+            <img src="images/logo-scc.png" alt="Logo SCC">
+            <span>SCC<em>/smaeli</em></span>
+        </a>
+        <button class="nav__toggle" aria-label="Buka menu" id="tombolMenu">☰</button>
+        <nav class="nav__links" id="menu">
+            <a href="#tentang">Tentang</a>
+            <a href="#jejak">Jejak Langkah</a>
+            <a href="#galeri">Galeri</a>
+            <a href="#kenangan" class="nav__cta">Buku Kenangan</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="sirkuit" aria-hidden="true"></div>
+    <div class="wrap hero__grid">
+        <div>
+            <p class="mono label">&gt; komunitas_teknologi --sejak 2007</p>
+            <h1>Smaeli<br>Cyber Club</h1>
+            <p class="hero__lead">Dari sekelompok siswa yang belajar desain grafis di lab komputer, menjadi rumah bagi para pemrogram, perakit robot, dan pegiat cyber di SMA Negeri 5 Parepare.</p>
+            <div class="hero__aksi">
+                <a href="#jejak" class="tombol">Lihat jejak langkah</a>
+                <a href="#kenangan" class="tombol tombol--garis">Tulis kenangan</a>
+            </div>
+        </div>
+        <div class="hero__logo"><img src="images/logo-scc.png" alt="Logo Smaeli Cyber Club"></div>
+    </div>
+    <div class="wrap angka">
+        <div><strong>±2007</strong><span>awal sebagai Kunci Saraf</span></div>
+        <div><strong>3</strong><span>nama dalam satu perjalanan</span></div>
+        <div><strong>Ang. 2–22</strong><span>angkatan yang menjaga komunitas</span></div>
+        <div><strong>5</strong><span>siswi di angkatan 22</span></div>
+    </div>
+</section>
+
+<!-- ================= 01 PENGENALAN ================= -->
+<section class="seksi" id="tentang">
+    <div class="wrap dua-kolom">
+        <div>
+            <p class="mono label gelap">01 · apa itu SCC</p>
+            <h2>Wadah belajar teknologi, dari pemula sampai olimpiade.</h2>
+        </div>
+        <div>
+            <p class="besar">Smaeli Cyber Club atau SCC adalah komunitas teknologi di SMA Negeri 5 Parepare. Komunitas ini menjadi wadah bagi siswa yang berminat pada desain grafis, robotika, informatika, pemrograman, web, komputer, perangkat keras, dan bidang cyber. SCC juga mendukung siswa yang ingin mempersiapkan diri mengikuti OSN Informatika dan perlombaan teknologi lainnya.</p>
+            <ul class="chip">
+                <li>Desain Grafis</li><li>Robotika</li><li>Pemrograman Dasar &amp; Lanjutan</li><li>Web &amp; Aplikasi</li><li>Linux</li><li>Perangkat Keras</li><li>Keamanan Komputer</li><li>Cyber</li><li>OSN Informatika</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 02 TIGA NAMA ================= -->
+<section class="seksi seksi--gelap" id="jejak">
+    <div class="wrap">
+        <p class="mono label">02 · tiga nama, satu komunitas</p>
+        <h2>Kunci Saraf → Robotika → SCC</h2>
+        <div class="era">
+            <article class="era__kartu">
+                <span class="era__no mono">01</span>
+                <p class="mono kecil kuning">± 2007 · Angkatan 2</p>
+                <h3>Kunci Saraf</h3>
+                <p>Beberapa siswa yang menyukai desain grafis berkumpul dan belajar bersama di laboratorium komputer sekolah.</p>
+            </article>
+            <article class="era__kartu">
+                <span class="era__no mono">02</span>
+                <p class="mono kecil kuning">± 2016 · Angkatan 10, aktif angkatan 11</p>
+                <h3>Komunitas Robotika</h3>
+                <p>Kegiatan berkembang ke robotika dan pemrograman. Anggota mulai merancang robot dan belajar kode.</p>
+            </article>
+            <article class="era__kartu">
+                <span class="era__no mono">03</span>
+                <p class="mono kecil kuning">± 2020–2021 · Angkatan 15–16</p>
+                <h3>Smaeli Cyber Club</h3>
+                <p>Bidang kegiatan meluas ke komputer, Linux, web, aplikasi, keamanan komputer, dan cyber.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 03 LINIMASA ================= -->
+<section class="seksi">
+    <div class="wrap">
+        <p class="mono label gelap">03 · jejak langkah</p>
+        <h2>Linimasa SCC</h2>
+        <ol class="linimasa">
+            <li><span class="linimasa__tahun mono">2007</span><div><h3>Lahir sebagai Kunci Saraf</h3><p>Siswa angkatan 2 belajar desain grafis bersama di lab komputer. Pak Kasbuddin ikut mengusulkan, membimbing, dan mengembangkan kegiatannya.</p></div></li>
+            <li><span class="linimasa__tahun mono">2016</span><div><h3>Menjadi Komunitas Robotika</h3><p>Berganti nama pada angkatan 10 dan mulai aktif pada angkatan 11. Angkatan pertama Robotika tampil di Smaeli Night Camp 2016.</p></div></li>
+            <li><span class="linimasa__tahun mono">Ang. 11–12</span><div><h3>Generasi pertama perempuan</h3><p>Sekitar dua sampai tiga siswi bergabung, tercatat sebagai generasi pertama perempuan dalam sejarah komunitas.</p></div></li>
+            <li><span class="linimasa__tahun mono">2020–2021</span><div><h3>Resmi bernama Smaeli Cyber Club</h3><p>Bidang yang makin beragam, biaya robotika, dan keterbatasan pembimbing mendorong komunitas memperluas cakupannya.</p></div></li>
+            <li><span class="linimasa__tahun mono">Ang. 18</span><div><h3>Kalibrasi &amp; OSN</h3><p>SCC sering menjadi tempat berkumpul siswa yang mengikuti OSN Informatika dan Fisika.</p></div></li>
+            <li><span class="linimasa__tahun mono">Ang. 19</span><div><h3>Aplikasi &amp; robot</h3><p>Anggota mulai mengembangkan aplikasi dan merancang robot, serta mewakili sekolah di lomba tingkat kota dan provinsi.</p></div></li>
+            <li><span class="linimasa__tahun mono">2025</span><div><h3>Angkatan 21 — Kristal</h3><p>Tiga siswi bergabung: generasi perempuan pertama sejak bernama SCC, dan generasi kedua dalam sejarah komunitas.</p></div></li>
+            <li><span class="linimasa__tahun mono">2026</span><div><h3>Angkatan 22</h3><p>Anggota perempuan bertambah menjadi lima orang. Sejarah SCC mulai dicatat lewat penelitian ini.</p></div></li>
+        </ol>
+    </div>
+</section>
+
+<!-- ================= 04 ALASAN ================= -->
+<section class="seksi seksi--krem">
+    <div class="wrap">
+        <p class="mono label gelap">04 · kenapa SCC ada</p>
+        <h2>Belajar bersama, sebagian besar secara otodidak.</h2>
+        <div class="alasan">
+            <div class="alasan__item"><h3>Mengembangkan minat</h3><p>Wadah untuk coding, robotika, perangkat keras, dan bidang teknologi lainnya.</p></div>
+            <div class="alasan__item"><h3>Persiapan OSN &amp; lomba</h3><p>Tempat belajar bagi siswa yang bersiap mengikuti OSN Informatika dan berbagai perlombaan teknologi.</p></div>
+            <div class="alasan__item"><h3>Dari pemula ke lanjutan</h3><p>Pemula belajar kode dasar dan membuat web; yang lebih lanjut mengembangkan aplikasi dan merancang robot.</p></div>
+            <div class="alasan__item"><h3>Mengharumkan sekolah</h3><p>Anggota SCC sering menjadi perwakilan sekolah dalam lomba tingkat kota dan provinsi.</p></div>
+        </div>
+        <div class="catatan">
+            <p class="mono kecil">// tahukah kamu?</p>
+            <p>Pada masa angkatan Kalibrasi (18), anggota punya istilah informal <strong>“ilmu hitam”</strong> untuk kegiatan yang berkaitan dengan peretasan. Mereka juga sering bermain game bersama, dan sebagian besar kebutuhan lomba disiapkan secara mandiri, dengan izin dan guru pembimbing dari sekolah.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 05 SISWI ================= -->
+<section class="seksi">
+    <div class="wrap dua-kolom">
+        <div>
+            <p class="mono label gelap">05 · siswi di SCC</p>
+            <h2>Komunitas yang makin terbuka.</h2>
+            <p>Sejak awal, komunitas ini hanya diikuti anggota laki-laki. Siswi pertama tercatat di masa Robotika, lalu kembali hadir di angkatan 21 dan bertambah di angkatan 22.</p>
+        </div>
+        <div class="batang">
+            <div class="batang__baris">
+                <div class="batang__label"><strong>Angkatan 11–12</strong><span class="mono kecil">Masa Robotika</span></div>
+                <div class="batang__jalur"><div class="batang__isi" style="width:60%"><i></i><i></i><i></i></div></div>
+                <span class="mono">2–3 siswi</span>
+            </div>
+            <div class="batang__baris">
+                <div class="batang__label"><strong>Angkatan 21</strong><span class="mono kecil">2025 · SCC</span></div>
+                <div class="batang__jalur"><div class="batang__isi" style="width:60%"><i></i><i></i><i></i></div></div>
+                <span class="mono">3 siswi</span>
+            </div>
+            <div class="batang__baris">
+                <div class="batang__label"><strong>Angkatan 22</strong><span class="mono kecil">2026 · SCC</span></div>
+                <div class="batang__jalur"><div class="batang__isi" style="width:100%"><i></i><i></i><i></i><i></i><i></i></div></div>
+                <span class="mono">5 siswi</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 06 TOKOH ================= -->
+<section class="seksi seksi--gelap">
+    <div class="wrap">
+        <p class="mono label">06 · orang-orang di balik cerita</p>
+        <h2>Pembina &amp; alumni yang berbagi ingatan</h2>
+        <div class="tokoh">
+            <div class="tokoh__kartu"><div class="tokoh__inisial mono">K</div><h3>Pak Kasbuddin</h3><p class="mono kecil kuning">Guru pembimbing</p><p class="muted">Ikut mengusulkan, membimbing, dan mengembangkan kegiatan sejak masa Kunci Saraf.</p></div>
+            <div class="tokoh__kartu"><div class="tokoh__inisial mono">T</div><h3>Kak Tio</h3><p class="mono kecil kuning">Alumni · Dimensi (17)</p><p class="muted">Narasumber penelitian sejarah SCC.</p></div>
+            <div class="tokoh__kartu"><div class="tokoh__inisial mono">H</div><h3>Kak Hasby</h3><p class="mono kecil kuning">Alumni · Kalibrasi (18)</p><p class="muted">Narasumber tentang masa OSN dan kegiatan SCC angkatan 18.</p></div>
+            <div class="tokoh__kartu"><div class="tokoh__inisial mono">H</div><h3>Kak Hafidzal</h3><p class="mono kecil kuning">Alumni · Insight (19)</p><p class="muted">Narasumber tentang pengembangan aplikasi dan robot.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 07 GALERI ================= -->
+<section class="seksi seksi--krem" id="galeri">
+    <div class="wrap">
+        <p class="mono label gelap">07 · galeri kenangan</p>
+        <h2>Potongan dokumentasi dari masa ke masa</h2>
+        <p class="muted">Klik foto untuk memperbesar.</p>
+        <div class="galeri">
+            <figure class="galeri__lebar">
+                <button type="button" data-foto="images/robotika-2016.jpg" data-ket="Angkatan pertama Robotika · 2016 — Penampilan di Smaeli Night Camp 2016."><img src="images/robotika-2016.jpg" alt="Angkatan pertama Robotika" loading="lazy"></button>
+                <figcaption><strong>Angkatan pertama Robotika</strong><span class="mono kecil">2016</span><p class="muted">Penampilan di Smaeli Night Camp 2016.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/angkatan-kalibrasi-18.jpg" data-ket="Angkatan Kalibrasi (18) — Foto bersama anggota SCC angkatan 18."><img src="images/angkatan-kalibrasi-18.jpg" alt="Angkatan Kalibrasi (18)" loading="lazy"></button>
+                <figcaption><strong>Angkatan Kalibrasi (18)</strong><p class="muted">Foto bersama anggota SCC angkatan 18.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/angkatan-insight-19.jpg" data-ket="Angkatan Insight (19) — Foto bersama anggota SCC angkatan 19."><img src="images/angkatan-insight-19.jpg" alt="Angkatan Insight (19)" loading="lazy"></button>
+                <figcaption><strong>Angkatan Insight (19)</strong><p class="muted">Foto bersama anggota SCC angkatan 19.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/kegiatan-2024-a.jpg" data-ket="Kegiatan SCC · 2024 — Anggota dan pembimbing di meja proyek."><img src="images/kegiatan-2024-a.jpg" alt="Kegiatan SCC 2024" loading="lazy"></button>
+                <figcaption><strong>Kegiatan SCC</strong><span class="mono kecil">2024</span><p class="muted">Anggota dan pembimbing di meja proyek.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/kegiatan-2024-b.jpg" data-ket="Kegiatan SCC · 2024 — Memamerkan lengan robot buatan anggota."><img src="images/kegiatan-2024-b.jpg" alt="Kegiatan SCC 2024" loading="lazy"></button>
+                <figcaption><strong>Kegiatan SCC</strong><span class="mono kecil">2024</span><p class="muted">Memamerkan lengan robot buatan anggota.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/merakit-robot.jpg" data-ket="Merakit robot — Ketua komunitas angkatan 18 & anggota angkatan 19 merakit robot."><img src="images/merakit-robot.jpg" alt="Merakit robot" loading="lazy"></button>
+                <figcaption><strong>Merakit robot</strong><p class="muted">Ketua komunitas angkatan 18 &amp; anggota angkatan 19 merakit robot.</p></figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/anggota-kristal-21.jpg" data-ket="Angkatan Kristal (21) · 2025 — Salah satu anggota SCC angkatan 21 di lab komputer."><img src="images/anggota-kristal-21.jpg" alt="Angkatan Kristal (21)" loading="lazy"></button>
+                <figcaption><strong>Angkatan Kristal (21)</strong><span class="mono kecil">2025</span><p class="muted">Salah satu anggota SCC angkatan 21 di lab komputer.</p></figcaption>
+            </figure>
+        </div>
+
+        <div class="identitas">
+            <figure>
+                <button type="button" data-foto="images/logo-scc.png" data-ket="Logo resmi SCC"><img src="images/logo-scc.png" alt="Logo resmi SCC" loading="lazy"></button>
+                <figcaption class="mono kecil">Logo resmi SCC</figcaption>
+            </figure>
+            <figure>
+                <button type="button" data-foto="images/baju-scc.jpg" data-ket="Desain baju resmi SCC"><img src="images/baju-scc.jpg" alt="Desain baju resmi SCC" loading="lazy"></button>
+                <figcaption class="mono kecil">Desain baju resmi SCC</figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
+<!-- ================= 08 BUKU KENANGAN ================= -->
+<section class="seksi" id="kenangan">
+    <div class="wrap">
+        <p class="mono label gelap">08 · buku kenangan</p>
+        <h2>Pernah jadi bagian dari SCC?</h2>
+        <p>Tinggalkan pesan untuk adik-adik angkatan, cerita lomba, atau ucapan terima kasih untuk pembina.</p>
+
+        <div class="kenangan">
+            <aside class="form-kartu">
+                <h3>Tulis kenanganmu</h3>
+                <p class="notif" id="notif" hidden>Terima kasih! Kenanganmu sudah tertempel di dinding SCC.</p>
+                <form id="formKenangan">
+                    <label>Nama
+                        <input type="text" id="nama" maxlength="60" required placeholder="Nama atau panggilan">
+                    </label>
+                    <label>Angkatan / peran <span class="muted">(boleh dikosongkan)</span>
+                        <input type="text" id="angkatan" maxlength="40" list="daftarAngkatan" placeholder="mis. Kalibrasi (18)">
+                        <datalist id="daftarAngkatan">
+                            <option value="Dimensi (17)"><option value="Kalibrasi (18)"><option value="Insight (19)"><option value="Kristal (21)"><option value="Angkatan 22"><option value="Guru / Pembina"><option value="Alumni"><option value="Sahabat SCC">
+                        </datalist>
+                    </label>
+                    <label>Pesan kenangan
+                        <textarea id="pesan" rows="5" minlength="5" maxlength="600" required placeholder="Cerita lomba, pesan untuk adik angkatan, atau terima kasih untuk pembina…"></textarea>
+                        <small class="muted mono" id="hitung">0/600</small>
+                    </label>
+                    <fieldset class="warna">
+                        <legend>Warna kartu</legend>
+                        <label><input type="radio" name="warna" value="kuning" checked><span class="titik titik--kuning"></span>Kuning</label>
+                        <label><input type="radio" name="warna" value="putih"><span class="titik titik--putih"></span>Putih</label>
+                        <label><input type="radio" name="warna" value="hitam"><span class="titik titik--hitam"></span>Hitam</label>
+                    </fieldset>
+                    <button type="submit" class="tombol tombol--penuh" id="tombolKirim">Tempel di dinding</button>
+                </form>
+            </aside>
+
+            <div>
+                <nav class="filter" id="filter"></nav>
+                <div class="dinding" id="dinding"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+    <div class="wrap footer__grid">
+        <div>
+            <div class="footer__logos">
+                <img src="images/logo-scc.png" alt="Logo SCC">
+                <img src="images/logo-sman5.png" alt="Logo SMA Negeri 5 Parepare">
+            </div>
+            <p class="mono">Smaeli Cyber Club · SMA Negeri 5 Parepare</p>
+            <p class="muted">Jl. Kelapa Gading No. 69, Bumi Harapan, Bacukiki Barat, Kota Parepare, Sulawesi Selatan</p>
+        </div>
+        <div>
+            <p class="mono kecil">// sumber isi</p>
+            <p class="muted">“Bintang di Balik Almamater: Menggali Arsip Sejarah dan Jejak Langkah Pembentukan Komunitas Smaeli Cyber Club (SCC) SMAN 5 Parepare” — Kara Medina Rahmat.</p>
+        </div>
+    </div>
+    <div class="wrap footer__bawah mono kecil">
+        <span>&lt;/&gt; dari Kunci Saraf, untuk angkatan berikutnya</span>
+        <span>© <span id="tahun"></span> SCC SMAN 5 Parepare</span>
+    </div>
+</footer>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox" hidden>
+    <button type="button" class="lightbox__tutup" aria-label="Tutup" id="tutupLightbox">×</button>
+    <img src="" alt="">
+    <p class="mono kecil"></p>
+</div>
+
+<script>
+// =====================================================================
+//  ALAMAT DATABASE (Google Sheets)
+//  Ganti tulisan TEMPEL_URL_DI_SINI dengan "Web app URL" dari Apps Script.
+//  Contoh: const URL_DATABASE = 'https://script.google.com/macros/s/AKfy.../exec';
+// =====================================================================
+const URL_DATABASE = 'https://script.google.com/macros/s/AKfycbwAkm85Zv_upolmSdVJCPViTMsASuNUSJhBFFjn3v9esix8JVcrjjKeryeT0tZO1m-drw/exec';
+
+// Tahun di footer
+document.getElementById('tahun').textContent = new Date().getFullYear();
+
+// Menu HP
+document.getElementById('tombolMenu').addEventListener('click', () => {
+    document.getElementById('menu').classList.toggle('buka');
+});
+document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('menu').classList.remove('buka');
+}));
+
+// Lightbox galeri
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
+const lbKet = lightbox.querySelector('p');
+document.querySelectorAll('[data-foto]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        lbImg.src = btn.dataset.foto;
+        lbImg.alt = btn.dataset.ket;
+        lbKet.textContent = btn.dataset.ket;
+        lightbox.hidden = false;
+    });
+});
+function tutupLightbox() { lightbox.hidden = true; lbImg.src = ''; }
+lightbox.addEventListener('click', e => { if (e.target === lightbox) tutupLightbox(); });
+document.getElementById('tutupLightbox').addEventListener('click', tutupLightbox);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') tutupLightbox(); });
+
+// ================= BUKU KENANGAN (tersimpan di Google Sheets) =================
+const DATABASE_SIAP = URL_DATABASE.startsWith('https://script.google.com/');
+const WARNA_BOLEH = ['kuning', 'putih', 'hitam'];
+let semuaKenangan = [];
+let filterAktif = null;
+let sedangMemuat = true;
+
+function aman(teks) {
+    const div = document.createElement('div');
+    div.textContent = teks;
+    return div.innerHTML;
+}
+
+// Merapikan data dari spreadsheet (angka diubah ke teks, warna dibatasi)
+function rapikan(k) {
+    return {
+        id: Number(k.id) || 0,
+        nama: String(k.nama ?? '').trim(),
+        angkatan: String(k.angkatan ?? '').trim(),
+        pesan: String(k.pesan ?? '').trim(),
+        warna: WARNA_BOLEH.includes(k.warna) ? k.warna : 'kuning',
+        waktu: k.waktu
+    };
+}
+
+function tampilkanPesan(judul, isi) {
+    document.getElementById('filter').innerHTML = '';
+    document.getElementById('dinding').innerHTML =
+        `<div class="kosong"><p class="mono">${judul}</p><p>${isi}</p></div>`;
+}
+
+async function muatKenangan() {
+    if (!DATABASE_SIAP) {
+        sedangMemuat = false;
+        tampilkanPesan('// database belum disambungkan', 'Isi URL_DATABASE di bagian script dengan Web app URL dari Google Apps Script.');
+        return;
+    }
+    try {
+        const res = await fetch(URL_DATABASE);
+        const data = await res.json();
+        semuaKenangan = Array.isArray(data)
+            ? data.map(rapikan).filter(k => k.nama && k.pesan)
+            : [];
+        sedangMemuat = false;
+        tampilkan();
+    } catch (err) {
+        console.error(err);
+        sedangMemuat = false;
+        tampilkanPesan('// gagal memuat kenangan', 'Periksa koneksi internet, lalu muat ulang halaman.');
+    }
+}
+
+function tampilkan() {
+    if (sedangMemuat) {
+        tampilkanPesan('// memuat kenangan…', 'Sebentar ya.');
+        return;
+    }
+    const dinding = document.getElementById('dinding');
+    const filter = document.getElementById('filter');
+
+    // tombol filter angkatan
+    const angkatan = [...new Set(semuaKenangan.map(k => k.angkatan).filter(Boolean))].sort();
+    filter.innerHTML = angkatan.length
+        ? `<button class="${!filterAktif ? 'aktif' : ''}" data-filter="">Semua</button>` +
+          angkatan.map(a => `<button class="${filterAktif === a ? 'aktif' : ''}" data-filter="${aman(a)}">${aman(a)}</button>`).join('')
+        : '';
+    filter.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+        filterAktif = b.dataset.filter || null;
+        tampilkan();
+    }));
+
+    const daftar = semuaKenangan.filter(k => !filterAktif || k.angkatan === filterAktif);
+    if (!daftar.length) {
+        dinding.innerHTML = '<div class="kosong"><p class="mono">// dinding masih kosong</p><p>Jadilah orang pertama yang menempelkan kenangan.</p></div>';
+        return;
+    }
+    dinding.innerHTML = daftar.map(k => {
+        const tgl = new Date(k.waktu);
+        const tanggal = isNaN(tgl) ? '' : tgl.toLocaleDateString('id-ID');
+        return `
+        <figure class="sticky sticky--${k.warna}">
+            <blockquote>${aman(k.pesan)}</blockquote>
+            <figcaption>
+                <strong>${aman(k.nama)}</strong>
+                ${k.angkatan ? `<span>${aman(k.angkatan)}</span>` : ''}
+                <time class="mono kecil">${tanggal}</time>
+            </figcaption>
+        </figure>`;
+    }).join('');
+}
+
+const pesan = document.getElementById('pesan');
+pesan.addEventListener('input', () => {
+    document.getElementById('hitung').textContent = `${pesan.value.length}/600`;
+});
+
+function tunjukkanNotif(teks, gagal) {
+    const notif = document.getElementById('notif');
+    notif.textContent = teks;
+    notif.classList.toggle('notif--gagal', !!gagal);
+    notif.hidden = false;
+    setTimeout(() => notif.hidden = true, gagal ? 6000 : 4000);
+}
+
+document.getElementById('formKenangan').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target;
+    const tombol = document.getElementById('tombolKirim');
+    const baru = {
+        id: Date.now(),
+        nama: document.getElementById('nama').value.trim(),
+        angkatan: document.getElementById('angkatan').value.trim(),
+        pesan: pesan.value.trim(),
+        warna: document.querySelector('input[name="warna"]:checked').value,
+        waktu: new Date().toISOString()
+    };
+    if (!baru.nama || baru.pesan.length < 5) return;
+    if (!DATABASE_SIAP) {
+        tunjukkanNotif('Database belum disambungkan, kenangan belum bisa dikirim.', true);
+        return;
+    }
+
+    tombol.disabled = true;
+    tombol.textContent = 'Menempelkan…';
+    try {
+        // dikirim sebagai teks biasa agar diterima Google Apps Script
+        const res = await fetch(URL_DATABASE, { method: 'POST', body: JSON.stringify(baru) });
+        const hasil = (await res.text()).trim();
+        if (hasil !== 'ok') throw new Error(hasil);
+    } catch (err) {
+        console.error(err);
+        tunjukkanNotif('Maaf, kenangan belum terkirim. Periksa koneksi internet lalu coba lagi.', true);
+        tombol.disabled = false;
+        tombol.textContent = 'Tempel di dinding';
+        return;
+    }
+    tombol.disabled = false;
+    tombol.textContent = 'Tempel di dinding';
+
+    semuaKenangan = [baru, ...semuaKenangan];
+    form.reset();
+    document.getElementById('hitung').textContent = '0/600';
+    tunjukkanNotif('Terima kasih! Kenanganmu sudah tertempel di dinding SCC.');
+    filterAktif = null;
+    tampilkan();
+});
+
+tampilkan();
+muatKenangan();
+</script>
+</body>
+</html>
